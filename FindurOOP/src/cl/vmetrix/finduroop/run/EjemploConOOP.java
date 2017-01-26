@@ -3,7 +3,7 @@ package cl.vmetrix.finduroop.run;
 import com.olf.openjvs.OException;
 
 import cl.vmetrix.finduroop.api.ObjectContext;
-import cl.vmetrix.finduroop.exception.CreateDynamicInstanceException;
+import cl.vmetrix.finduroop.api.exception.CreateDynamicInstanceException;
 
 public class EjemploConOOP {
 	public static void main(String[] args) throws CreateDynamicInstanceException, OException {

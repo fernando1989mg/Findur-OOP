@@ -8,10 +8,11 @@ import java.lang.reflect.InvocationTargetException;
 import cl.vmetrix.finduroop.api.annotation.VColumn;
 import cl.vmetrix.finduroop.api.annotation.VQuery;
 import cl.vmetrix.finduroop.api.annotation.VTable;
+import cl.vmetrix.finduroop.api.exception.ColumnGenerateException;
+import cl.vmetrix.finduroop.api.exception.CreateDynamicInstanceException;
 import cl.vmetrix.finduroop.dummies.DBaseTable;
 import cl.vmetrix.finduroop.dummies.Table;
-import cl.vmetrix.finduroop.exception.ColumnGenerateException;
-import cl.vmetrix.finduroop.exception.CreateDynamicInstanceException;
+
 
 //import com.olf.openjvs.DBaseTable;
 import com.olf.openjvs.OException;

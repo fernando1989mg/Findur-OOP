@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.vmetrix.finduroop.api.annotation.VColumn;
+import cl.vmetrix.finduroop.api.exception.CreateDynamicInstanceException;
+import cl.vmetrix.finduroop.api.exception.RowGenerateException;
 import cl.vmetrix.finduroop.dummies.Table;
-import cl.vmetrix.finduroop.exception.CreateDynamicInstanceException;
-import cl.vmetrix.finduroop.exception.RowGenerateException;
 
 import com.olf.openjvs.OException;
 import com.olf.openjvs.enums.COL_TYPE_ENUM;

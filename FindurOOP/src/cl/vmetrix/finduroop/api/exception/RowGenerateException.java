@@ -1,4 +1,4 @@
-package cl.vmetrix.finduroop.exception;
+package cl.vmetrix.finduroop.api.exception;
 
 public class RowGenerateException extends RuntimeException {
 
