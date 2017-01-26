@@ -1,0 +1,35 @@
+package cl.vmetrix.findurreflection.run;
+
+import cl.vmetrix.findurreflection.api.Column;
+import cl.vmetrix.findurreflection.api.Entity;
+import cl.vmetrix.findurreflection.api.annotation.VColumn;
+import cl.vmetrix.findurreflection.api.annotation.VQuery;
+import cl.vmetrix.findurreflection.api.annotation.VTable;
+
+import com.olf.openjvs.OException;
+
+@VTable(name="ext_table")
+public class TableNegocio extends Entity<TableNegocio>{
+
+	public TableNegocio() throws OException {
+		super();
+	}
+
+	private Column<Integer> transNum;
+	
+	private Column<String> detail;
+	
+	private Column<Integer> dealNum;
+	
+	public Column<Integer> getTransNum() {
+		return transNum;
+	}
+
+	public Column<String> getDetail() {
+		return detail;
+	}
+
+	public Column<Integer> getDealNum() {
+		return dealNum;
+	}
+}
