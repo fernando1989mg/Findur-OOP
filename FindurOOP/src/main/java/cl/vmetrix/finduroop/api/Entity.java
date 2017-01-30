@@ -5,9 +5,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cl.vmetrix.finduroop.api.annotation.VColumn;
+import cl.vmetrix.finduroop.api.enums.DataTypeColumn;
 import cl.vmetrix.finduroop.api.exception.CreateDynamicInstanceException;
 import cl.vmetrix.finduroop.api.exception.RowGenerateException;
 import cl.vmetrix.finduroop.dummies.Table;
@@ -18,12 +21,28 @@ import com.olf.openjvs.enums.COL_TYPE_ENUM;
 public abstract class Entity<T extends Entity<?>> extends Table{
 	
 	private List<Entity<?>> rows;
+	private HashMap<String,Column<?>> columnsRuntime;
+	
 	protected T t;
 	
 	public Entity() throws OException {
 		super();
 		
 		rows = new ArrayList<>();
+		columnsRuntime = new HashMap<>();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Column<T> column(String columnName){
+		return (Column<T>) columnsRuntime.get(columnName);
+	}
+	
+	private void addColumnAtRuntime(String columnName, T typeColumn){
+		Column<T> column = new Column<>();
+		column.setName(columnName);
+		column.setTable(t);
+		
+		columnsRuntime.put(columnName, column);
 	}
 	
 	@SuppressWarnings({ "rawtypes" })
@@ -48,6 +67,7 @@ public abstract class Entity<T extends Entity<?>> extends Table{
 			try {
 				column = (Column)f.get(this.t);
 			} catch (IllegalArgumentException | IllegalAccessException | SecurityException e) {
+				//TODO mensaje de error 
 				return null;
 			} 
 			

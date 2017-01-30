@@ -8,10 +8,12 @@ import java.lang.reflect.InvocationTargetException;
 import cl.vmetrix.finduroop.api.annotation.VColumn;
 import cl.vmetrix.finduroop.api.annotation.VQuery;
 import cl.vmetrix.finduroop.api.annotation.VTable;
+import cl.vmetrix.finduroop.api.enums.DataTypeColumn;
 import cl.vmetrix.finduroop.api.exception.ColumnGenerateException;
 import cl.vmetrix.finduroop.api.exception.CreateDynamicInstanceException;
 import cl.vmetrix.finduroop.dummies.DBaseTable;
 import cl.vmetrix.finduroop.dummies.Table;
+
 
 
 //import com.olf.openjvs.DBaseTable;
@@ -76,19 +78,10 @@ public class ObjectContext {
 				Column<Integer> column = null;
 				
 				try {
-					if(f.getGenericType().toString().contains("Integer")){
-						t.addCol(name, COL_TYPE_ENUM.COL_INT, title);
-						
-						column = ObjectContext.generateObjectColumn(Integer.class, name, t);
-					}else if(f.getGenericType().toString().contains("String")){
-						t.addCol(name, COL_TYPE_ENUM.COL_STRING, title);
-						
-						column = ObjectContext.generateObjectColumn(String.class, name, t);
-					}else if(f.getGenericType().toString().contains("Double")){
-						t.addCol(name, COL_TYPE_ENUM.COL_DOUBLE, title);
-						
-						column = ObjectContext.generateObjectColumn(Double.class, name, t);
-					}
+					DataTypeColumn typeColumn = DataTypeColumn.getType(f.getGenericType().toString());
+					
+					t.addCol(name, typeColumn.getFindurType(), title);
+					column = ObjectContext.generateObjectColumn(f.getGenericType().getClass(), name, t);
 					
 					f.set((Object)t, column);
 				}catch (IllegalArgumentException | IllegalAccessException | ColumnGenerateException e) {
