@@ -10,8 +10,9 @@ import cl.vmetrix.finduroop.dummies.Table;
  * @param <T>
  */
 public class Column<T> {
-	private T value;
+	protected T value;
 	private String name;
+	private String title;
 	private Class<?> type;
 	private Table table;
 
@@ -23,6 +24,14 @@ public class Column<T> {
 		this.name = name;
 	}
 	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public T getValue() {
 		return value;
 	}
@@ -30,7 +39,7 @@ public class Column<T> {
 	public void setValue(T value) {
 		this.value = value;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public T getRow(int numRow){
 		if(type.getTypeName().contains("Integer")){

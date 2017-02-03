@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import cl.vmetrix.finduroop.api.annotation.VColumn;
 import cl.vmetrix.finduroop.api.enums.DataTypeColumn;
@@ -21,7 +21,7 @@ import com.olf.openjvs.enums.COL_TYPE_ENUM;
 public abstract class Entity<T extends Entity<?>> extends Table{
 	
 	private List<Entity<?>> rows;
-	private HashMap<String,Column<?>> columnsRuntime;
+	private HashMap<String,ColumnRuntime<? extends Object>> columnsRuntime;
 	
 	protected T t;
 	
@@ -33,21 +33,30 @@ public abstract class Entity<T extends Entity<?>> extends Table{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Column<T> column(String columnName){
-		return (Column<T>) columnsRuntime.get(columnName);
+	public ColumnRuntime<?> column(String columnName){
+		return (ColumnRuntime<?>) columnsRuntime.get(columnName);
 	}
 	
-	private void addColumnAtRuntime(String columnName, T typeColumn){
-		Column<T> column = new Column<>();
+	private void addColumnAtRuntime(String columnName, ColumnRuntime<?> column){
+		this.addColumnAtRuntime(columnName, "", column);
+	}
+	
+	private void addColumnAtRuntime(String columnName, String columnTitle, ColumnRuntime<?> column){
 		column.setName(columnName);
+		column.setTitle(columnTitle);
 		column.setTable(t);
-		
+
 		columnsRuntime.put(columnName, column);
+	}
+	
+	void clearRuntimeColumns(){
+		columnsRuntime.clear();
 	}
 	
 	@SuppressWarnings({ "rawtypes" })
 	public Integer newRow()
 	{
+		//nueva fila de findur, "t" es la tabla de findur
 		Integer iRow = this.t.addRow();
 		
 		for(Field f : this.t.getClass().getDeclaredFields()){
@@ -82,6 +91,16 @@ public abstract class Entity<T extends Entity<?>> extends Table{
 				
 			}
 		}
+		
+		
+		//ahora recorremos las columnas que fueron agregadas en tiempo de ejecución
+		for(Entry<String, ColumnRuntime<?>> e : this.columnsRuntime.entrySet()) {
+	        String columnName = e.getKey();
+	        Column<?> columnObj = e.getValue();
+	        
+	        System.out.println("");
+
+	    }
 		
 		try {
 			this.rows.add(cloneTableObject(this.t));
@@ -154,6 +173,8 @@ public abstract class Entity<T extends Entity<?>> extends Table{
 	@Override
 	public int addCol(String col_name, COL_TYPE_ENUM col_type)
 	           throws OException{
+		
+		this.addColumnAtRuntime(col_name, DataTypeColumn.getTypeByFindurType(col_type).getCoreType());
 		return super.addCol(col_name, col_type);
 	}
 
@@ -161,6 +182,8 @@ public abstract class Entity<T extends Entity<?>> extends Table{
 	public int addCol(String col_name,COL_TYPE_ENUM col_type,
 	         String title)
 	           throws OException{
+		
+		this.addColumnAtRuntime(col_name, title, DataTypeColumn.getTypeByFindurType(col_type).getCoreType());
 		return super.addCol(col_name, col_type, title);
 	}
 
